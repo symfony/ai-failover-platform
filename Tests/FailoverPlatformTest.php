@@ -43,11 +43,11 @@ final class FailoverPlatformTest extends TestCase
     {
         $mainPlatform = $this->createMock(PlatformInterface::class);
         $mainPlatform->expects($this->once())->method('invoke')
-            ->willThrowException(new \Exception('The invoke method cannot be called from the main platform.'));
+            ->willThrowException(new RuntimeException('The invoke method cannot be called from the main platform.'));
 
         $failedPlatform = $this->createMock(PlatformInterface::class);
         $failedPlatform->expects($this->once())->method('invoke')
-            ->willThrowException(new \Exception('The invoke method cannot be called from a failed platform.'));
+            ->willThrowException(new RuntimeException('The invoke method cannot be called from a failed platform.'));
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->exactly(2))->method('error');
@@ -67,11 +67,11 @@ final class FailoverPlatformTest extends TestCase
     {
         $mainPlatform = $this->createMock(PlatformInterface::class);
         $mainPlatform->expects($this->once())->method('getModelCatalog')
-            ->willThrowException(new \Exception('The ModelCatalog cannot be retrieved from the main platform.'));
+            ->willThrowException(new RuntimeException('The ModelCatalog cannot be retrieved from the main platform.'));
 
         $failedPlatform = $this->createMock(PlatformInterface::class);
         $failedPlatform->expects($this->once())->method('getModelCatalog')
-            ->willThrowException(new \Exception('The ModelCatalog cannot be retrieved from a failed platform.'));
+            ->willThrowException(new RuntimeException('The ModelCatalog cannot be retrieved from a failed platform.'));
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->exactly(2))->method('error');
@@ -91,7 +91,7 @@ final class FailoverPlatformTest extends TestCase
     {
         $failedPlatform = $this->createMock(PlatformInterface::class);
         $failedPlatform->expects($this->once())->method('invoke')
-            ->willThrowException(new \Exception('The invoke method cannot be called from a failed platform.'));
+            ->willThrowException(new RuntimeException('The invoke method cannot be called from a failed platform.'));
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error');
@@ -110,7 +110,7 @@ final class FailoverPlatformTest extends TestCase
     {
         $failedPlatform = $this->createMock(PlatformInterface::class);
         $failedPlatform->expects($this->once())->method('getModelCatalog')
-            ->willThrowException(new \Exception('The ModelCatalog cannot be retrieved from a failed platform.'));
+            ->willThrowException(new RuntimeException('The ModelCatalog cannot be retrieved from a failed platform.'));
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error');
@@ -133,7 +133,7 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (1 === ++$call) {
-                    throw new \Exception('An error occurred from a failed platform while calling invoke.');
+                    throw new RuntimeException('An error occurred from a failed platform while calling invoke.');
                 }
 
                 return new DeferredResult(
@@ -171,7 +171,7 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (1 === ++$call) {
-                    throw new \Exception('An error occurred from a failed platform while retrieving the ModelCatalog.');
+                    throw new RuntimeException('An error occurred from a failed platform while retrieving the ModelCatalog.');
                 }
 
                 return new FallbackModelCatalog();
@@ -208,7 +208,7 @@ final class FailoverPlatformTest extends TestCase
                     );
                 }
 
-                throw new \Exception('An error occurred from the main platform while calling invoke.');
+                throw new RuntimeException('An error occurred from the main platform while calling invoke.');
             });
 
         $failedPlatform = $this->createMock(PlatformInterface::class);
@@ -217,10 +217,10 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (1 === ++$call) {
-                    throw new \Exception('An error occurred from a failing platform while calling invoke.');
+                    throw new RuntimeException('An error occurred from a failing platform while calling invoke.');
                 }
 
-                throw new \Exception('An error occurred from a failing platform while calling invoke.');
+                throw new RuntimeException('An error occurred from a failing platform while calling invoke.');
             });
 
         $logger = $this->createMock(LoggerInterface::class);
@@ -256,7 +256,7 @@ final class FailoverPlatformTest extends TestCase
                     return new FallbackModelCatalog();
                 }
 
-                throw new \Exception('An error occurred');
+                throw new RuntimeException('An error occurred');
             });
 
         $failedPlatform = $this->createMock(PlatformInterface::class);
@@ -265,10 +265,10 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (1 === ++$call) {
-                    throw new \Exception('An error occurred from a failing platform');
+                    throw new RuntimeException('An error occurred from a failing platform');
                 }
 
-                throw new \Exception('An error occurred from a failing platform');
+                throw new RuntimeException('An error occurred from a failing platform');
             });
 
         $logger = $this->createMock(LoggerInterface::class);
@@ -299,7 +299,7 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (4 === ++$call) {
-                    throw new \Exception('An error occurred from the first platform while calling invoke.');
+                    throw new RuntimeException('An error occurred from the first platform while calling invoke.');
                 }
 
                 return new DeferredResult(
@@ -314,14 +314,14 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (1 === ++$call) {
-                    throw new \Exception('An error occurred from a failing platform');
+                    throw new RuntimeException('An error occurred from a failing platform');
                 }
 
                 if (3 === ++$call) {
-                    throw new \Exception('An error occurred from a failing platform');
+                    throw new RuntimeException('An error occurred from a failing platform');
                 }
 
-                throw new \Exception('An error occurred from a failing platform');
+                throw new RuntimeException('An error occurred from a failing platform');
             });
 
         $logger = $this->createMock(LoggerInterface::class);
@@ -355,7 +355,7 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (4 === ++$call) {
-                    throw new \Exception('An error occurred from the first platform while retrieving the model catalog.');
+                    throw new RuntimeException('An error occurred from the first platform while retrieving the model catalog.');
                 }
 
                 return new FallbackModelCatalog();
@@ -367,14 +367,14 @@ final class FailoverPlatformTest extends TestCase
                 static $call = 0;
 
                 if (1 === ++$call) {
-                    throw new \Exception('An error occurred from a failing platform');
+                    throw new RuntimeException('An error occurred from a failing platform');
                 }
 
                 if (3 === ++$call) {
-                    throw new \Exception('An error occurred from a failing platform');
+                    throw new RuntimeException('An error occurred from a failing platform');
                 }
 
-                throw new \Exception('An error occurred from a failing platform');
+                throw new RuntimeException('An error occurred from a failing platform');
             });
 
         $logger = $this->createMock(LoggerInterface::class);
